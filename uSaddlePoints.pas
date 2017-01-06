@@ -8,13 +8,13 @@ type
   ['{8C41B1A2-335D-4C6D-AF55-9F307F358227}']
     function Calculate: TArray<Tuple<integer, integer>>;
     function getStatus: string;
-    property Status: string read getStatus;
+    property ToString: string read getStatus;
   end;
 
-  function NewSaddlePoints(aValues: TArray<TArray<integer>>): ISaddlePoints;
+  function newSaddlePoints(aValues: TArray<TArray<integer>>): ISaddlePoints;
 
 implementation
-uses Spring.Collections;
+uses SysUtils, Spring.Collections;
 
 type
   TSaddlePoints = class(TInterfacedObject, ISaddlePoints)
@@ -33,10 +33,10 @@ type
   public
     constructor create(aValues: TArray<TArray<integer>>);
     function Calculate: TArray<Tuple<integer, integer>>;
-    property Status: string read getStatus;
+    property ToString: string read getStatus;
   end;
 
-function NewSaddlePoints(aValues: TArray<TArray<integer>>): ISaddlePoints;
+function newSaddlePoints(aValues: TArray<TArray<integer>>): ISaddlePoints;
 begin
   result := TSaddlePoints.create(aValues);
 end;
@@ -98,12 +98,19 @@ begin
 end;
 
 function TSaddlePoints.Calculate: TArray<Tuple<integer, integer>>;
+var lTuple: Tuple<integer, integer>;
 begin
   result := Coordinates.Where(IsSaddlePoint).ToArray;
   if length(result) = 0 then
     fStatus := 'No saddle points'
   else
+  begin
     fStatus := '';
+    for lTuple in result do
+      fStatus := fStatus + format('(%d,%d),',[lTuple.Value1, lTuple.Value2]);
+    fStatus := fStatus.Remove(fStatus.Length - 1);
+  end;
+
 end;
 
 function TSaddlePoints.ColumnCount: integer;
