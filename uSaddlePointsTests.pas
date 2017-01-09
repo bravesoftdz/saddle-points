@@ -33,18 +33,27 @@ implementation
 uses Spring, uSaddlePoints;
 
 procedure TSaddlePointTests.Readme_example;
-var values: TArray<TArray<integer>>;
+var SaddlePoints: ISaddlePoints;
+    values: TArray<TArray<integer>>;
+    {$ifndef CheckFormattedOutput}
     expected: TArray<tuple<integer,integer>>;
+    {$endif}
 begin
   SetLength(values, 3, 3);
   values[0,0] := 9; values[0,1] := 8; values[0,2] := 7;
   values[1,0] := 5; values[1,1] := 3; values[1,2] := 2;
   values[2,0] := 6; values[2,1] := 6; values[2,2] := 7;
 
+  SaddlePoints := newSaddlePoints(values);
+
+  {$ifdef CheckFormattedOutput}
+  SaddlePoints.Calculate;
+  Assert.AreEqual('(1,0)', SaddlePoints.ToString);
+  {$else}
   SetLength(expected, 1);
   expected[0] := Tuple<integer,integer>.Create(1,0);
-
-  Assert.AreEqual(expected,newSaddlePoints(values).Calculate);
+  Assert.AreEqual(expected,SaddlePoints.Calculate);
+  {$endif}
 end;
 
 procedure TSaddlePointTests.No_saddle_point;
@@ -79,7 +88,6 @@ begin
   SetLength(values, 2, 2);
   values[0,0] := 1; values[0,1] := 2;
   values[1,0] := 3; values[1,1] := 4;
-
 
   SaddlePoints := newSaddlePoints(values);
 
