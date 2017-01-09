@@ -23,8 +23,8 @@ type
     fmaxRows: TArray<integer>;
     fminCols: TArray<integer>;
     fStatus: string;
-    function getRows: TArray<integer>;
-    function getColumns: TArray<integer>;
+    function getMaxRows: TArray<integer>;
+    function getMinColumns: TArray<integer>;
     function Coordinates: IList<Tuple<integer, integer>>;
     function ColumnCount: integer;
     function RowCount: integer;
@@ -46,8 +46,8 @@ var I: integer;
     J: integer;
 begin
   fValues := copy(aValues);
-  fmaxRows := getRows;
-  fminCols := getColumns;
+  fmaxRows := getMaxRows;
+  fminCols := getMinColumns;
   fStatus := 'Calculation not performed';
 end;
 
@@ -56,7 +56,7 @@ begin
   result := fStatus;
 end;
 
-function TSaddlePoints.getRows: TArray<integer>;
+function TSaddlePoints.getMaxRows: TArray<integer>;
 var I: integer;
     J: integer;
     lRow: IList<integer>;
@@ -72,7 +72,7 @@ begin
   end;
 end;
 
-function TSaddlePoints.getColumns: TArray<integer>;
+function TSaddlePoints.getMinColumns: TArray<integer>;
 var I: integer;
     J: integer;
     lColumn: IList<integer>;
