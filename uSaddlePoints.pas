@@ -1,12 +1,12 @@
 unit uSaddlePoints;
 
 interface
-uses Spring;
+uses uSaddlePointsTests;
 
 type
   ISaddlePoints = interface(IInvokable)
   ['{8C41B1A2-335D-4C6D-AF55-9F307F358227}']
-    function Calculate: TArray<Tuple<integer, integer>>;
+    function Calculate: TArray<TTuple<integer, integer>>;
     function getStatus: string;
     property ToString: string read getStatus;
   end;
@@ -25,14 +25,14 @@ type
     fStatus: string;
     function getMaxRows: TArray<integer>;
     function getMinColumns: TArray<integer>;
-    function Coordinates: IList<Tuple<integer, integer>>;
+    function Coordinates: IList<TTuple<integer, integer>>;
     function ColumnCount: integer;
     function RowCount: integer;
-    function IsSaddlePoint(const coordinate: Tuple<integer, integer>): boolean;
+    function IsSaddlePoint(const coordinate: TTuple<integer, integer>): boolean;
     function getStatus: string;
   public
     constructor create(aValues: TArray<TArray<integer>>);
-    function Calculate: TArray<Tuple<integer, integer>>;
+    function Calculate: TArray<TTuple<integer, integer>>;
     property ToString: string read getStatus;
   end;
 
@@ -88,17 +88,17 @@ begin
   end;
 end;
 
-function TSaddlePoints.Coordinates: IList<Tuple<integer, integer>>;
+function TSaddlePoints.Coordinates: IList<TTuple<integer, integer>>;
 var I, J: integer;
 begin
-  result := TCollections.CreateList<Tuple<integer, integer>>;
+  result := TCollections.CreateList<TTuple<integer, integer>>;
   for I := 0 to RowCount - 1 do
     for J := 0 to ColumnCount - 1 do
-      result.Add(Tuple<integer, integer>.Create(I,J));
+      result.Add(TTuple<integer, integer>.Create(I,J));
 end;
 
-function TSaddlePoints.Calculate: TArray<Tuple<integer, integer>>;
-var lTuple: Tuple<integer, integer>;
+function TSaddlePoints.Calculate: TArray<TTuple<integer, integer>>;
+var lTuple: TTuple<integer, integer>;
 begin
   result := Coordinates.Where(IsSaddlePoint).ToArray;
   if length(result) = 0 then
@@ -110,7 +110,6 @@ begin
       fStatus := fStatus + format('(%d,%d),',[lTuple.Value1, lTuple.Value2]);
     fStatus := fStatus.Remove(fStatus.Length - 1);
   end;
-
 end;
 
 function TSaddlePoints.ColumnCount: integer;
@@ -123,7 +122,7 @@ begin
   result := length(fValues);
 end;
 
-function TSaddlePoints.IsSaddlePoint(const coordinate: Tuple<integer, integer>): boolean;
+function TSaddlePoints.IsSaddlePoint(const coordinate: TTuple<integer, integer>): boolean;
 begin
   result := (fmaxRows[coordinate.Value1] = fValues[coordinate.Value1, coordinate.Value2]) and
             (fminCols[coordinate.Value2] = fValues[coordinate.Value1, coordinate.Value2]);
