@@ -8,7 +8,7 @@ uses
 type
 
   [TestFixture]
-  TSaddlePointTests = class(TObject) 
+  TSaddlePointTests = class(TObject)
   public
     [Test]
     procedure Readme_example;
@@ -29,14 +29,31 @@ type
     procedure Five_by_five_matrix;
   end;
 
+  TTuple<T1, T2> = record
+  private
+    fValue1: T1;
+    fValue2: T2;
+  public
+    constructor Create(Value1: T1; Value2: T2);
+    property Value1 : T1 read fValue1;
+    property Value2 : T2 read fValue2;
+  end;
+
 implementation
-uses Spring, uSaddlePoints;
+uses uSaddlePoints;
+
+constructor TTuple<T1, T2>.Create(Value1: T1; Value2: T2);
+begin
+  fValue1 := Value1;
+  fValue2 := Value2;
+end;
+
 
 procedure TSaddlePointTests.Readme_example;
 var SaddlePoints: ISaddlePoints;
     values: TArray<TArray<integer>>;
     {$ifndef CheckFormattedOutput}
-    expected: TArray<tuple<integer,integer>>;
+    expected: TArray<TTuple<integer,integer>>;
     {$endif}
 begin
   SetLength(values, 3, 3);
@@ -51,7 +68,7 @@ begin
   Assert.AreEqual('(1,0)', SaddlePoints.ToString);
   {$else}
   SetLength(expected, 1);
-  expected[0] := Tuple<integer,integer>.Create(1,0);
+  expected[0] := TTuple<integer,integer>.Create(1,0);
   Assert.AreEqual(expected,SaddlePoints.Calculate);
   {$endif}
 end;
@@ -60,7 +77,7 @@ procedure TSaddlePointTests.No_saddle_point;
 var SaddlePoints: ISaddlePoints;
     values: TArray<TArray<integer>>;
     {$ifndef CheckFormattedOutput}
-    expected: TArray<tuple<integer,integer>>;
+    expected: TArray<TTuple<integer,integer>>;
     {$endif}
 begin
   SetLength(values, 2, 2);
@@ -82,7 +99,7 @@ procedure TSaddlePointTests.Saddle_point;
 var SaddlePoints: ISaddlePoints;
     values: TArray<TArray<integer>>;
     {$ifndef CheckFormattedOutput}
-    expected: TArray<tuple<integer,integer>>;
+    expected: TArray<TTuple<integer,integer>>;
     {$endif}
 begin
   SetLength(values, 2, 2);
@@ -96,7 +113,7 @@ begin
   Assert.AreEqual('(0,1)', SaddlePoints.ToString);
   {$else}
   SetLength(expected, 1);
-  expected[0] := Tuple<integer,integer>.Create(0,1);
+  expected[0] := TTuple<integer,integer>.Create(0,1);
   Assert.AreEqual(expected,SaddlePoints.Calculate);
   {$endif}
 end;
@@ -105,7 +122,7 @@ procedure TSaddlePointTests.Another_saddle_point;
 var SaddlePoints: ISaddlePoints;
     values: TArray<TArray<integer>>;
     {$ifndef CheckFormattedOutput}
-    expected: TArray<tuple<integer,integer>>;
+    expected: TArray<TTuple<integer,integer>>;
     {$endif}
 begin
   SetLength(values, 3, 5);
@@ -120,7 +137,7 @@ begin
   Assert.AreEqual('(2,2)', SaddlePoints.ToString);
   {$else}
   SetLength(expected, 1);
-  expected[0] := Tuple<integer,integer>.Create(2,2);
+  expected[0] := TTuple<integer,integer>.Create(2,2);
   Assert.AreEqual(expected,SaddlePoints.Calculate);
   {$endif}
 end;
@@ -129,7 +146,7 @@ procedure TSaddlePointTests.Multiple_saddle_points;
 var SaddlePoints: ISaddlePoints;
     values: TArray<TArray<integer>>;
     {$ifndef CheckFormattedOutput}
-    expected: TArray<tuple<integer,integer>>;
+    expected: TArray<TTuple<integer,integer>>;
     {$endif}
 begin
   SetLength(values, 3, 3);
@@ -144,9 +161,9 @@ begin
   Assert.AreEqual('(0,1),(1,1),(2,1)', SaddlePoints.ToString);
   {$else}
   SetLength(expected, 3);
-  expected[0] := Tuple<integer,integer>.Create(0,1);
-  expected[1] := Tuple<integer,integer>.Create(1,1);
-  expected[2] := Tuple<integer,integer>.Create(2,1);
+  expected[0] := TTuple<integer,integer>.Create(0,1);
+  expected[1] := TTuple<integer,integer>.Create(1,1);
+  expected[2] := TTuple<integer,integer>.Create(2,1);
   Assert.AreEqual(expected,SaddlePoints.Calculate);
   {$endif}
 end;
@@ -155,7 +172,7 @@ procedure TSaddlePointTests.Five_by_five_matrix;
 var SaddlePoints: ISaddlePoints;
     values: TArray<TArray<integer>>;
     {$ifndef CheckFormattedOutput}
-    expected: TArray<tuple<integer,integer>>;
+    expected: TArray<TTuple<integer,integer>>;
     {$endif}
 begin
   SetLength(values, 5, 5);
@@ -172,7 +189,7 @@ begin
   Assert.AreEqual('(2,2)', SaddlePoints.ToString);
   {$else}
   SetLength(expected, 1);
-  expected[0] := Tuple<integer,integer>.Create(2,2);
+  expected[0] := TTuple<integer,integer>.Create(2,2);
   Assert.AreEqual(expected, SaddlePoints.Calculate);
   {$endif}
 end;
